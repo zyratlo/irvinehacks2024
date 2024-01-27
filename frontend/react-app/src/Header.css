@@ -1,0 +1,6 @@
+.colored-box-header {
+    background-color: #773344; /* Set your desired background color */
+    color: #fff; /* Set the text color for better contrast */
+    padding: 3vh; /* Add padding to the box */
+    border-radius: 0 0 5px 5px; /* Optional: Add border-radius for rounded corners */
+}
