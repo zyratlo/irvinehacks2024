@@ -54,11 +54,11 @@ def get_symptoms():
 @app.post("/get_illness_description")
 def get_illness_description(illness: str):
     if (illness not in illness_descriptions.keys()):
-        raise HTTPException(status_code=422, detail="Illness is not contained in this database")
+        raise HTTPException(status_code=404, detail="Illness is not contained in this database")
     return illness_descriptions[illness]
 
 @app.post("/get_precautions")
 def get_precautions(illness: str):
     if (illness not in illness_precautions.keys()):
-        raise HTTPException(status_code=422, detail="Illness is not contained in this database")
+        raise HTTPException(status_code=404, detail="Illness is not contained in this database")
     return list(illness_precautions[illness])
