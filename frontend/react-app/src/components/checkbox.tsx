@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Checkbox, VStack, Button, Text, Flex, Wrap, WrapItem } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
+import { Checkbox, VStack, Button, Text, Wrap, WrapItem } from '@chakra-ui/react';
 
 const CheckboxComponent = () => {
   const [options, setOptions] = useState([]);
