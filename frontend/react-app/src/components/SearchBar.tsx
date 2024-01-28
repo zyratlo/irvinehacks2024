@@ -3,6 +3,8 @@ import {HStack, Input, TagCloseButton, Tag, TagLabel,} from "@chakra-ui/react";
 import React, { useState } from 'react';
 
 function SearchBar() {
+    const url = "https://localhost:8000"
+    const url_prediction = url + "/"
     // Styling
     const button = {
         width: '100%',
@@ -28,7 +30,11 @@ function SearchBar() {
 
     // State Boxes
     //const [inputValue, setInputValue] = useState('')
-    const [symptoms, setSymptoms] = useState<{id: number; value: string}[]> ([])
+    type simpleSymptom = {
+        id: number;
+        value: string;
+    }
+    const [symptoms, setSymptoms] = useState<simpleSymptom[]> ([])
 
     const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
@@ -44,7 +50,22 @@ function SearchBar() {
         }
     }
 
-    // const deleteEvent =
+    const deleteTag = (tag: number) => {
+        const update = symptoms.filter(
+            symptom => symptom.id != tag
+        );
+        setSymptoms(update)
+    }
+
+    // const [prediction, setPrediction] = useState(null)
+    // const makePrediction = (event: MouseEvent) => {
+    //     const response = await fetch(url_prediction, {
+    //         method: 'post',
+    //         body: {
+    //
+    //         }
+    //     })
+    // }
 
     return (
         <>
@@ -58,11 +79,11 @@ function SearchBar() {
                                 <TagLabel>
                                     {symptom.value}
                                 </TagLabel>
-                            <TagCloseButton />
+                            <TagCloseButton onClick={() => deleteTag(symptom.id)}/>
                             </Tag>))
                     }
                 </HStack>
-                <button className="btn btn-primary" style={button}>Search</button>
+                <button className="btn btn-primary" style={button} onClick={}>Search</button>
             </div>
         </>
     )
