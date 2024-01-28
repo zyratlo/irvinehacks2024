@@ -100,27 +100,25 @@ const SearchBar = () => {
                 <Button onClick={makePrediction}>Get Diagnosis</Button>
                 {responseData &&
                     <>
-                        <div>
+                        <div className="largeContainer">
                             <div className="container">
                                 <Heading className="child-left">Prediction</Heading>
                                 <Divider className="divider" orientation="vertical" borderColor={'#774433'}/>
-                                <p className="child-right">{responseData.prediction}</p>
+                                <p className="child-right prediction">{responseData.prediction}</p>
                             </div>
 
-                            <Divider className="divider" orientation="horizontal" borderColor={'#774433'} />
+                            {/*<Divider className="divider" orientation="horizontal" borderColor={'#774433'} />*/}
 
-                            <div className="container">
-                                <Heading className="child-left">Description</Heading>
-                                <Divider className="divider" orientation="vertical" borderColor={'#774433'}/>
-                                <p className="child-right">{responseData.description}</p>
+                            <div className="container2">
+                                <Heading >Description</Heading>
+                                <Divider orientation="horizontal" borderColor={'#774433'}/>
+                                <p>{responseData.description}</p>
                             </div>
 
-                            <Divider className="divider" orientation="horizontal" borderColor={'#774433'} />
-
-                            <div className="container">
-                                <Heading className="child-left">Precautions</Heading>
-                                <Divider className="divider" orientation="vertical" borderColor={'#774433'}/>
-                                <UnorderedList className="child-right">
+                            <div className="container2">
+                                <Heading >Precautions</Heading>
+                                <Divider orientation="horizontal" borderColor={'#774433'}/>
+                                <UnorderedList>
                                     {
                                         responseData.precautions.map(precaution => (
                                             <ListItem>{precaution}</ListItem>

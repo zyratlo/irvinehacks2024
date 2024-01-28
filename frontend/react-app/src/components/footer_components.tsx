@@ -1,3 +1,4 @@
+import './footer.css'
 function FooterText() {
     const styling = {
         display: "inlineBlock",
