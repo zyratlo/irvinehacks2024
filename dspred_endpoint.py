@@ -7,8 +7,21 @@ import pickle
 import numpy as np
 import os
 from typing import List
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:5173",  # Update this with the origin of your React app
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Load the scikit-learn model
 with open(os.path.join("models", "random_forest_model.pkl"), "rb") as file:
@@ -25,6 +38,8 @@ with open(os.path.join("models", "illness_descriptions.pkl"), "rb") as file:
 # Load id conversion
 with open(os.path.join("models", "convert_id_to_illness.pkl"), "rb") as file:
     convert_id_to_illness = pickle.load(file)
+with open(os.path.join("models", "convert_symptom_to_id.pkl"), "rb") as file:
+    convert_illness_to_id = pickle.load(file)
 
 # Load illness precautions
 with open(os.path.join("models", "illness_precautions.pkl"), "rb") as file:
@@ -32,21 +47,19 @@ with open(os.path.join("models", "illness_precautions.pkl"), "rb") as file:
 
 # Define the input data model
 class InputData(BaseModel):
-    features: List[bool]
+    selected_options: List[str]
 
 @app.post("/predict")
-def predict(data: InputData):
-    if (len(data.features) != 131):
-        raise HTTPException(status_code=422, detail="Input data needs to be a list of 131 boolean values")
-
+def predict(selected_options: InputData):
     try:
-        # Extract features from the input data
-        features = np.array([data.features])
+        features = [0] * 131
+        for option in selected_options.selected_options:
+            features[convert_illness_to_id[option]] = 1
 
         # Make predictions using the loaded model
-        prediction = model.predict(features)
+        prediction = convert_id_to_illness[model.predict([features])[0]]
 
-        return {"prediction": convert_id_to_illness[prediction[0]]}
+        return {"prediction": f"{prediction}\n{get_illness_description(prediction)}\n{get_precautions(prediction)}"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
     
