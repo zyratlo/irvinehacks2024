@@ -1,0 +1,57 @@
+.largeContainer {
+    background-color: #F2F2F2;
+    margin-right: 3vh;
+    border-radius: 10px;
+    font-family: 'Open Sans';
+    font-size: 16px;
+    padding-bottom: 2vh;
+    padding-top: 1vh;
+    margin-top: 2vh
+}
+
+.container {
+    width: 80%;
+    margin-left: 0;
+    height: 60px;
+    margin-bottom: 4vh;
+    margin-top: 2vh;
+}
+
+.prediction {
+    font-size: 22px;
+}
+
+.child-left {
+    display: inline-block;
+    min-width: 20%;
+    padding-left: 5px;
+    padding-right: 3vh;
+}
+
+.divider {
+    margin-top: 1vh;
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 1vh;
+    border-style: solid;
+    border-width: 15px;
+}
+
+.child-right {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 3vh;
+    width: 70%;
+}
+
+.spacer {
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+}
+
+.container2 {
+    width: 95%;
+    margin-left: 0;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+}

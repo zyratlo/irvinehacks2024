@@ -15,7 +15,7 @@ function App() {
           <Header />
           <Search />
       </div>
-        <Footer />
+        {/*<Footer />*/}
 
         </ChakraProvider>
     </>
