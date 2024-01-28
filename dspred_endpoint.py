@@ -47,7 +47,7 @@ def predict(data: InputData):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
     
-@app.post("/get_symptoms")
+@app.get("/get_symptoms")
 def get_symptoms():
     return symptoms
 

@@ -1,6 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
+import {HStack, Input, TagCloseButton, Tag, TagLabel,} from "@chakra-ui/react";
+import React, { useState } from 'react';
 
 function SearchBar() {
+    // Styling
     const button = {
         width: '100%',
         height: '5vh',
@@ -8,13 +11,57 @@ function SearchBar() {
     }
 
     const inputBox = {
-        marginBottom: '10px'
+        marginBottom: '2vh'
     }
+
+    const tagFormat = {
+        marginBottom: '2vh',
+    }
+
+    const singleTag = {
+        borderColor: '#773344',
+        borderWidth: '3px',
+        borderStyle: 'ridge',
+        backgroundColor: '#d9d9d9',
+        color: '#000000'
+    }
+
+    // State Boxes
+    //const [inputValue, setInputValue] = useState('')
+    const [symptoms, setSymptoms] = useState<{id: number; value: string}[]> ([])
+
+    const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            event.preventDefault()
+
+            // Add to list
+            setSymptoms([...symptoms, {
+                id: symptoms.length,
+                value: event.currentTarget.value
+            }])
+
+            event.currentTarget.value = ''
+        }
+    }
+
+    // const deleteEvent =
+
     return (
         <>
             <div className="mb-3">
                 <label htmlFor="Input1" className="form-label">Search</label>
-                <input type="text" className="form-control" id="Input1" placeholder="Add A Symptom..." style={inputBox}/>
+                <Input placeholder="Add symptoms..." size="md" style={inputBox} variant="filled" onKeyDown={handleEnter}/>
+                <HStack spacing={4}  style={tagFormat}>
+                    {
+                        symptoms.map(symptom => (
+                            <Tag size="lg" key={symptom.id} borderRadius="full" variant="solid" style={singleTag}>
+                                <TagLabel>
+                                    {symptom.value}
+                                </TagLabel>
+                            <TagCloseButton />
+                            </Tag>))
+                    }
+                </HStack>
                 <button className="btn btn-primary" style={button}>Search</button>
             </div>
         </>
