@@ -12,6 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+# Necessary networking step to ensure that front end can access these endpoints
 origins = [
     "*"
 ]
@@ -55,6 +56,7 @@ class InputData2(BaseModel):
     chosen_options: List[InputData]
 
 
+# Predicts the illness given the formatted data
 @app.post("/predict")
 def predict(chosen_options: InputData2):
     # print(chosen_options.chosen_options)
@@ -78,16 +80,19 @@ def predict(chosen_options: InputData2):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
     
+# Returns a list of symptoms
 @app.get("/get_symptoms")
 def get_symptoms():
     return symptoms
 
+# Returns the description for a given illness
 @app.post("/get_illness_description")
 def get_illness_description(illness: str):
     if (illness not in illness_descriptions.keys()):
         raise HTTPException(status_code=404, detail="Illness is not contained in this database")
     return illness_descriptions[illness]
 
+# Returns the precautions for a given illness
 @app.post("/get_precautions")
 def get_precautions(illness: str):
     if (illness not in illness_precautions.keys()):
