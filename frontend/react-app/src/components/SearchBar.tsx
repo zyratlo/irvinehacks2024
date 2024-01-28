@@ -57,15 +57,16 @@ function SearchBar() {
         setSymptoms(update)
     }
 
-    // const [prediction, setPrediction] = useState(null)
-    // const makePrediction = (event: MouseEvent) => {
-    //     const response = await fetch(url_prediction, {
-    //         method: 'post',
-    //         body: {
-    //
-    //         }
-    //     })
-    // }
+    // Set response data
+    const [responseData, setResponseData] = useState<string|null>(null)
+    const makePrediction = async() => {
+        const response = await fetch(url_prediction, {
+            method: 'post',
+            body: JSON.stringify(symptoms)
+        })
+        const data: string = await response.json()
+        setResponseData(data)
+    }
 
     return (
         <>
@@ -83,7 +84,8 @@ function SearchBar() {
                             </Tag>))
                     }
                 </HStack>
-                <button className="btn btn-primary" style={button} onClick={}>Search</button>
+                <button className="btn btn-primary" style={button} onClick={makePrediction}>Search</button>
+                <p>{responseData}</p>
             </div>
         </>
     )
