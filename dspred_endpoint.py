@@ -39,7 +39,7 @@ with open(os.path.join("models", "illness_descriptions.pkl"), "rb") as file:
 with open(os.path.join("models", "convert_id_to_illness.pkl"), "rb") as file:
     convert_id_to_illness = pickle.load(file)
 with open(os.path.join("models", "convert_symptom_to_id.pkl"), "rb") as file:
-    convert_illness_to_id = pickle.load(file)
+    convert_symptom_to_id = pickle.load(file)
 
 # Load illness precautions
 with open(os.path.join("models", "illness_precautions.pkl"), "rb") as file:
@@ -54,7 +54,7 @@ def predict(selected_options: InputData):
     try:
         features = [0] * 131
         for option in selected_options.selected_options:
-            features[convert_illness_to_id[option]] = 1
+            features[convert_symptom_to_id[option]] = 1
 
         # Make predictions using the loaded model
         prediction = convert_id_to_illness[model.predict([features])[0]]
