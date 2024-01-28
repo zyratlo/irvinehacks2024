@@ -12,7 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173",  # Update this with the origin of your React app
+    "*"
 ]
 
 app.add_middleware(
@@ -48,27 +48,27 @@ with open(os.path.join("models", "illness_precautions.pkl"), "rb") as file:
 # Define the input data model
 class InputData(BaseModel):
     id: int
-    option: str
+    value: str
 
 class InputData2(BaseModel):
-    selected_options: List[str]
+    chosen_options: List[InputData]
 
 
 @app.post("/predict")
-def predict(chosen_options: List[InputData]):
-
-    selected_options = InputData2(selected_options=[item.option for item in chosen_options])
-    print(selected_options.selected_options, type(selected_options.selected_options[0]))
+def predict(chosen_options: InputData2):
+    # print(chosen_options.chosen_options)
+    selected_options = [item.value for item in chosen_options.chosen_options]
+    # print(selected_options, type(selected_options))
     try:
         features = [0] * 131
-        for option in selected_options.selected_options:
+        for option in selected_options:
             features[convert_symptom_to_id[option]] = 1
 
         # Make predictions using the loaded model
         prediction = convert_id_to_illness[model.predict([features])[0]]
 
-        #return {"prediction": f"{prediction}\n{get_illness_description(prediction)}\n{get_precautions(prediction)}"}
-        return f"{prediction}\n{get_illness_description(prediction)}\n{get_precautions(prediction)}"
+        return {"prediction": f"{prediction}\n{get_illness_description(prediction)}\n{get_precautions(prediction)}"}
+        # return f"{prediction}\n{get_illness_description(prediction)}\n{get_precautions(prediction)}"
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")

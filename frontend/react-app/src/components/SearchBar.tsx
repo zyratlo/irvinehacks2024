@@ -1,10 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {HStack, Input, TagCloseButton, Tag, TagLabel,} from "@chakra-ui/react";
+import {HStack, Input, TagCloseButton, Tag, TagLabel,Button, Text} from "@chakra-ui/react";
 import React, { useState } from 'react';
 
-function SearchBar() {
+const SearchBar = () => {
     const url = "https://localhost:8000"
-    const url_prediction = url + "/"
+    const url_prediction = url + "/predict"
     // Styling
     const button = {
         width: '100%',
@@ -59,13 +59,20 @@ function SearchBar() {
 
     // Set response data
     const [responseData, setResponseData] = useState<string|null>(null)
-    const makePrediction = async() => {
-        const response = await fetch(url_prediction, {
-            method: 'post',
-            body: JSON.stringify(symptoms)
+    const makePrediction = () => {
+        fetch('http://localhost:8000/predict', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ chosen_options: symptoms }),
         })
-        const data: string = await response.json()
-        setResponseData(data)
+        .then(response => response.json())
+        .then(data => {
+            // console.log('Response from FastAPI:', data);
+            setResponseData(data.prediction); // Update state with the response
+        })
+        .catch(error => console.error('Error sending request to FastAPI:', error));
     }
 
     return (
@@ -84,8 +91,8 @@ function SearchBar() {
                             </Tag>))
                     }
                 </HStack>
-                <button className="btn btn-primary" style={button} onClick={makePrediction}>Search</button>
-                <p>{responseData}</p>
+                <Button onClick={makePrediction}>Diagnose Illness</Button>
+                {responseData && <Text>{responseData}</Text>}
             </div>
         </>
     )
