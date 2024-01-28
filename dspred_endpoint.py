@@ -1,3 +1,6 @@
+# RUN "uvicorn dspred_endpoint:app --reload"
+# and "npm run dev" in \frontend\react-app
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import pickle
