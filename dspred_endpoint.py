@@ -47,10 +47,18 @@ with open(os.path.join("models", "illness_precautions.pkl"), "rb") as file:
 
 # Define the input data model
 class InputData(BaseModel):
+    id: int
+    option: str
+
+class InputData2(BaseModel):
     selected_options: List[str]
 
+
 @app.post("/predict")
-def predict(selected_options: InputData):
+def predict(chosen_options: List[InputData]):
+
+    selected_options = InputData2(selected_options=[item.option for item in chosen_options])
+    print(selected_options.selected_options, type(selected_options.selected_options[0]))
     try:
         features = [0] * 131
         for option in selected_options.selected_options:
@@ -59,7 +67,9 @@ def predict(selected_options: InputData):
         # Make predictions using the loaded model
         prediction = convert_id_to_illness[model.predict([features])[0]]
 
-        return {"prediction": f"{prediction}\n{get_illness_description(prediction)}\n{get_precautions(prediction)}"}
+        #return {"prediction": f"{prediction}\n{get_illness_description(prediction)}\n{get_precautions(prediction)}"}
+        return f"{prediction}\n{get_illness_description(prediction)}\n{get_precautions(prediction)}"
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
     
