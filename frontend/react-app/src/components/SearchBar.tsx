@@ -1,16 +1,17 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {HStack, Input, TagCloseButton, Tag, TagLabel, Button, Heading, Divider, UnorderedList, ListItem, Center} from "@chakra-ui/react";
+import {HStack, Input, TagCloseButton, Tag, TagLabel, Button, Heading, Divider, UnorderedList, ListItem} from "@chakra-ui/react";
 import React, { useState } from 'react';
 import './SearchBar.css'
 
 const SearchBar = () => {
-    const url = "https://localhost:8000"
-    const url_prediction = url + "/predict"
+    // const url = "https://localhost:8000"
+    // const url_prediction = url + "/predict"
     // Styling
     const button = {
-        width: '100%',
-        height: '5vh',
-        backgroundColor: '#773344',
+        borderStyle: 'bold',
+        borderColor: 'black',
+        borderWidth: '2px',
+        width: '100%'
     }
 
     const inputBox = {
@@ -97,7 +98,7 @@ const SearchBar = () => {
                             </Tag>))
                     }
                 </HStack>
-                <Button onClick={makePrediction}>Get Diagnosis</Button>
+                <Button onClick={makePrediction} style={button}>Get Diagnosis</Button>
                 {responseData &&
                     <>
                         <div className="largeContainer">
