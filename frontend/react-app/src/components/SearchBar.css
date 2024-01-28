@@ -1,0 +1,30 @@
+.container {
+    margin: 0;
+    height: 60px;
+    margin-bottom: 3vh;
+}
+
+
+.child-left {
+    display: inline-block;
+    vertical-align: middle;
+    min-width: 20%;
+}
+
+.divider {
+    margin-top: 1vh;
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 1vh;
+    border-style: solid;
+    border-width: 15px;
+}
+
+.child-right {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0rem 4rem;
+    width: 75%;
+}
+
+

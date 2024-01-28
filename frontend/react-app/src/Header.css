@@ -4,3 +4,10 @@
     padding: 3vh; /* Add padding to the box */
     border-radius: 0 0 5px 5px; /* Optional: Add border-radius for rounded corners */
 }
+
+@font-face {
+    font-family: 'Pluto';
+    src: url('./fonts/Pluto-Heavy.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}

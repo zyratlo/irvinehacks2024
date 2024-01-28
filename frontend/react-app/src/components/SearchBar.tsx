@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {HStack, Input, TagCloseButton, Tag, TagLabel,Button, Text} from "@chakra-ui/react";
+import {HStack, Input, TagCloseButton, Tag, TagLabel, Button, Heading, Divider, UnorderedList, ListItem, Center} from "@chakra-ui/react";
 import React, { useState } from 'react';
+import './SearchBar.css'
 
 const SearchBar = () => {
     const url = "https://localhost:8000"
@@ -58,7 +59,12 @@ const SearchBar = () => {
     }
 
     // Set response data
-    const [responseData, setResponseData] = useState<string|null>(null)
+    type structuredResponse = {
+        "prediction": string;
+        "description": string;
+        "precautions": Array<string>;
+    }
+    const [responseData, setResponseData] = useState<structuredResponse|null>(null)
     const makePrediction = () => {
         fetch('http://localhost:8000/predict', {
         method: 'POST',
@@ -70,7 +76,7 @@ const SearchBar = () => {
         .then(response => response.json())
         .then(data => {
             // console.log('Response from FastAPI:', data);
-            setResponseData(data.prediction); // Update state with the response
+            setResponseData(data); // Update state with the response
         })
         .catch(error => console.error('Error sending request to FastAPI:', error));
     }
@@ -78,7 +84,7 @@ const SearchBar = () => {
     return (
         <>
             <div className="mb-3">
-                <label htmlFor="Input1" className="form-label">Search</label>
+                {/*<label htmlFor="Input1" className="form-label">Search</label>*/}
                 <Input placeholder="Add symptoms..." size="md" style={inputBox} variant="filled" onKeyDown={handleEnter}/>
                 <HStack spacing={4}  style={tagFormat}>
                     {
@@ -91,8 +97,41 @@ const SearchBar = () => {
                             </Tag>))
                     }
                 </HStack>
-                <Button onClick={makePrediction}>Diagnose Illness</Button>
-                {responseData && <Text>{responseData}</Text>}
+                <Button onClick={makePrediction}>Get Diagnosis</Button>
+                {responseData &&
+                    <>
+                        <div>
+                            <div className="container">
+                                <Heading className="child-left">Prediction</Heading>
+                                <Divider className="divider" orientation="vertical" borderColor={'#774433'}/>
+                                <p className="child-right">{responseData.prediction}</p>
+                            </div>
+
+                            <Divider className="divider" orientation="horizontal" borderColor={'#774433'} />
+
+                            <div className="container">
+                                <Heading className="child-left">Description</Heading>
+                                <Divider className="divider" orientation="vertical" borderColor={'#774433'}/>
+                                <p className="child-right">{responseData.description}</p>
+                            </div>
+
+                            <Divider className="divider" orientation="horizontal" borderColor={'#774433'} />
+
+                            <div className="container">
+                                <Heading className="child-left">Precautions</Heading>
+                                <Divider className="divider" orientation="vertical" borderColor={'#774433'}/>
+                                <UnorderedList className="child-right">
+                                    {
+                                        responseData.precautions.map(precaution => (
+                                            <ListItem>{precaution}</ListItem>
+                                        ))
+                                    }
+                                </UnorderedList>
+                            </div>
+
+                        </div>
+                    </>
+                }
             </div>
         </>
     )
