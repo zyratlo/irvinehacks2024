@@ -5,6 +5,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import pickle
 import numpy as np
+
 import os
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
@@ -62,12 +63,16 @@ def predict(chosen_options: InputData2):
     try:
         features = [0] * 131
         for option in selected_options:
-            features[convert_symptom_to_id[option]] = 1
+            try:
+                features[convert_symptom_to_id[option]] = 1
+            except:
+                pass
 
         # Make predictions using the loaded model
         prediction = convert_id_to_illness[model.predict([features])[0]]
 
-        return {"prediction": f"{prediction}\n{get_illness_description(prediction)}\n{get_precautions(prediction)}"}
+        return {"prediction": f"{prediction}", "description":f"{get_illness_description(prediction)}",
+               "precautions": [i for i in get_precautions(prediction) if type(i) is str]}
         # return f"{prediction}\n{get_illness_description(prediction)}\n{get_precautions(prediction)}"
 
     except Exception as e:
